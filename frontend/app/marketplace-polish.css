@@ -1,0 +1,136 @@
+/* Marketplace: an editorial collection of business briefs, on warm paper. */
+[aria-label="Challenge catalog"] > .section-heading {
+  border-top: 1px solid var(--ink);
+  padding-top: 22px;
+}
+[aria-label="Challenge catalog"] .filters {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0 0 22px;
+  gap: 24px;
+}
+[aria-label="Challenge catalog"] .filters select {
+  background: #fffdf8;
+  border-color: var(--line);
+  border-radius: 3px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+[aria-label="Challenge catalog"] .results-line { margin: 22px 0 12px; }
+[aria-label="Challenge catalog"] .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 44px; }
+.card-grid .challenge-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 25px 0 28px;
+  min-height: 285px;
+  box-shadow: none;
+}
+.card-grid .challenge-card:hover { border-top-color: var(--teal); box-shadow: none; }
+.card-grid .challenge-card:focus-visible { outline: 2px solid var(--teal); outline-offset: 6px; }
+.card-grid .challenge-card h2 {
+  max-width: 440px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.26;
+  letter-spacing: -.65px;
+  margin: 20px 0 13px;
+}
+.card-grid .challenge-card .industry { padding: 0; background: transparent; font-size: 10px; }
+.card-grid .challenge-card .arrow { color: var(--teal); font-size: 23px; }
+.card-grid .challenge-card .preview { max-width: 480px; font-size: 13px; line-height: 1.8; }
+.card-grid .challenge-card .card-facts { padding: 20px 0 18px; font-size: 11px; }
+.card-grid .challenge-card .card-bottom { border-top: 0; padding-top: 0; flex-direction: row; align-items: center; }
+.card-grid .challenge-card .score strong { font-size: 35px; font-weight: 500; letter-spacing: -1.4px; }
+.card-grid .challenge-card .badge { padding: 7px 10px; border-radius: 3px; }
+.readiness-guide#readiness-guide { border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; background: #eeeee4; padding: 30px 28px; }
+.readiness-guide#readiness-guide h2 { font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-weight: 400; }
+.readiness-guide#readiness-guide .level-guide { border-left: 1px solid var(--line); padding-left: 30px; }
+
+/* Public challenge detail: a readable document and a quiet readiness ledger. */
+.detail-layout:not(.interview-layout) > .brief:not(.new-challenge) {
+  background: #fffefb;
+  border-radius: 3px;
+  padding: 34px;
+}
+.detail-layout:not(.interview-layout) > .brief > .section-heading { padding-bottom: 6px; }
+.detail-layout:not(.interview-layout) .brief-field { padding: 27px 0; border-top-color: var(--line); }
+.detail-layout:not(.interview-layout) .brief-field h3 { font-size: 13px; font-weight: 600; letter-spacing: .15px; }
+.detail-layout:not(.interview-layout) .brief-field p { max-width: 68ch; font-size: 14px; line-height: 1.9; color: var(--ink); }
+.detail-layout:not(.interview-layout) .brief-field p.unknown { color: #7e6845; background: #f8f2e6; border-left-color: #d5b97c; }
+.detail-layout:not(.interview-layout) .brief-field .confirmed-label { color: var(--teal); }
+.detail-layout:not(.interview-layout) > .readiness-panel:not(.interview-explainer) { background: #eeeee4; border: 0; border-top: 2px solid var(--ink); border-radius: 0; padding: 27px; }
+.detail-layout:not(.interview-layout) > .readiness-panel .score strong { font-weight: 400; font-size: 72px; letter-spacing: -4px; }
+.detail-layout:not(.interview-layout) > .readiness-panel .breakdown > div { margin-bottom: 21px; }
+.detail-layout:not(.interview-layout) > .readiness-panel .score-note { color: var(--muted); }
+.detail-layout:not(.interview-layout) > .readiness-panel .reference-title { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
+
+/* Original proposals retain the visual character of a submitted document. */
+.detail-layout > .proposal-form:not(.new-challenge) h2 { font-family: Georgia, "Times New Roman", serif; font-size: 29px; font-weight: 400; }
+.detail-layout > .proposal-form:not(.new-challenge) fieldset { margin-top: 30px; }
+.detail-layout > .proposal-form:not(.new-challenge) label { margin-bottom: 25px; }
+.detail-layout > .proposal-form:not(.new-challenge) :is(input, textarea, select) { background: #fffefb; border-radius: 3px; border-color: #c9cec2; padding: 13px; }
+.detail-layout > .proposal-form:not(.new-challenge) textarea { line-height: 1.85; }
+.detail-layout > .proposal-form:not(.new-challenge) :is(input, textarea, select):focus { outline-color: var(--teal); }
+.container .proposal-grid { column-gap: 30px; row-gap: 28px; }
+.proposal-grid .proposal-review {
+  position: relative;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--ink);
+  border-radius: 2px;
+  background: #fffefb;
+  padding: 29px 30px;
+  box-shadow: 0 5px 0 -2px #e9e9df;
+}
+.proposal-grid .proposal-top { padding-bottom: 18px; margin-bottom: 23px; border-bottom: 1px solid var(--line); }
+.proposal-grid .proposal-review > h2 { font-family: Georgia, "Times New Roman", serif; font-size: 29px; font-weight: 400; letter-spacing: -.5px; margin: 12px 0 27px; }
+.proposal-grid .original-text > div { margin: 24px 0; }
+.proposal-grid .original-text dt { text-transform: uppercase; font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+.proposal-grid .original-text dd { color: var(--ink); line-height: 1.9; }
+.proposal-grid .original-text .prototype-link { text-underline-offset: 4px; }
+.proposal-grid .decision-actions { padding-top: 23px; margin-top: 26px; }
+.proposal-grid .decision-actions > span { flex-basis: 100%; margin-top: 5px; line-height: 1.7; }
+.proposal-grid .status-label { border-radius: 3px; font-size: 11px; }
+
+/* Business records read as a working register rather than another card wall. */
+.container .business-list { gap: 0; border-top: 1px solid var(--ink); }
+.business-list .business-row { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 28px 0; gap: 30px; }
+.business-list .business-row h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 25px; line-height: 1.35; margin: 13px 0; }
+.business-list .business-row .industry { background: transparent; padding: 0; }
+.business-list .business-row .row-actions > a:not(.button) { color: var(--teal); text-underline-offset: 4px; }
+.business-list .business-row .row-actions > a:not(.button):hover { text-decoration: underline; }
+
+@media (max-width: 1100px) {
+  [aria-label="Challenge catalog"] .filters { gap: 16px; }
+  [aria-label="Challenge catalog"] .card-grid { gap: 0 30px; }
+  .card-grid .challenge-card h2 { font-size: 24px; }
+  .detail-layout:not(.interview-layout) > .brief:not(.new-challenge) { padding: 27px; }
+}
+@media (max-width: 800px) {
+  .card-grid .challenge-card { min-height: 310px; }
+  .readiness-guide#readiness-guide .level-guide { border-left: 0; border-top: 1px solid var(--line); padding: 24px 0 0; }
+  .detail-layout:not(.interview-layout) > .readiness-panel:not(.interview-explainer) { position: static; }
+  .proposal-grid .proposal-review { padding: 26px; }
+  .business-list .business-row { gap: 22px; }
+}
+@media (max-width: 500px) {
+  [aria-label="Challenge catalog"] .card-grid { grid-template-columns: minmax(0, 1fr); }
+  [aria-label="Challenge catalog"] .filters { gap: 15px 12px; }
+  [aria-label="Challenge catalog"] .filters label { min-width: 0; }
+  [aria-label="Challenge catalog"] .filters select { min-width: 0; max-width: 100%; }
+  .card-grid .challenge-card { min-height: 0; padding: 23px 0 25px; }
+  .card-grid .challenge-card h2 { font-size: 25px; max-width: 100%; }
+  .card-grid .challenge-card .card-facts { padding-top: 18px; }
+  .readiness-guide#readiness-guide { padding: 24px 20px; }
+  .detail-layout:not(.interview-layout) > .brief:not(.new-challenge) { padding: 23px 20px; }
+  .detail-layout:not(.interview-layout) .brief-field .field-heading { align-items: flex-start; }
+  .detail-layout:not(.interview-layout) .brief-field { padding: 23px 0; }
+  .proposal-grid .proposal-review { padding: 22px 20px; }
+  .proposal-grid .proposal-review > h2 { font-size: 26px; }
+  .business-list .business-row h2 { font-size: 23px; }
+  .business-list .business-row .row-actions { gap: 16px; }
+}

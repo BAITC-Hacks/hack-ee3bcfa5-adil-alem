@@ -261,7 +261,6 @@ export function ChallengeInterview({ id }: { id: string }) {
     {interview?.error && <div className="form-error ai-error" role="alert"><h2>The interview assistant is temporarily unavailable</h2><p>{interview.error}</p><p>Your draft and saved answers are preserved. You can review them, finish for now, or retry.</p>{!isFinished && <button className="button secondary" disabled={busy} onClick={() => changeInterview(() => api.retryInterview(id))}>Retry AI</button>}</div>}
     {busy && <p className="interview-progress" role="status"><span className="loading-dot" />Saving and preparing the next step… Your words remain in the saved interview.</p>}
     {notice && <p className="save-status" role="status">{notice}</p>}
-    <ChallengeExecutionTest key={id} taskId={id} revision={executionRevision} disabled={busy} publication={blockers => <ChallengePublication task={task} interview={interview} blockers={blockers} busy={busy} publish={() => void changePublication(true)} unpublish={() => void changePublication(false)} saveTitle={title => void run(async () => { setTask(await api.updateTask(id, { title: title.trim() || null })); }, "Challenge title saved.")} />} />
     <div className="detail-layout interview-layout"><div className="interview-main">
       <section aria-labelledby="interview-questions-heading" className="interview-batch">
         <div className="section-heading"><h2 id="interview-questions-heading">{isFinished ? "Ready to review your knowledge" : "Let’s understand the challenge"}</h2><span className="muted text-sm">{interview?.status === "paused" ? "Paused" : interview?.status === "complete" ? "Current interview complete" : "Your perspective matters"}</span></div>
@@ -270,10 +269,13 @@ export function ChallengeInterview({ id }: { id: string }) {
           : !interview ? <div className="interview-completion"><h3>Your original draft is saved.</h3><p>Start the interview to organize what you have provided and explore unanswered questions.</p><button className="button" disabled={busy} onClick={() => changeInterview(() => api.startInterview(id))}>Start interview</button></div>
           : !interview.error ? <div className="interview-completion"><p>No questions are currently available. You can review the knowledge below or finish for now.</p></div> : null}
       </section>
+    <ChallengeExecutionTest key={id} taskId={id} revision={executionRevision} disabled={busy} publication={blockers => <ChallengePublication task={task} interview={interview} blockers={blockers} busy={busy} publish={() => void changePublication(true)} unpublish={() => void changePublication(false)} saveTitle={title => void run(async () => { setTask(await api.updateTask(id, { title: title.trim() || null })); }, "Challenge title saved.")} />} />
+    </div><KnowledgeMap task={task} interview={interview} /></div>
+    <div className="review-layout"><div className="interview-main">
       <section className="brief interview-review" aria-labelledby="review-heading"><div className="eyebrow accent">HUMAN REVIEW</div><h2 id="review-heading">Review before you confirm</h2><p className="muted text-sm">Compare the structured values with your original words. Edit and save each value, then confirm it only if it is accurate. AI never confirms for you.</p>
         {fieldNames.map(field => <ReviewField key={field} field={field} task={task} item={interview?.items.find(item => item.field === field)} sources={interview?.sources || []} busy={busy} save={(field, value) => run(async () => { setTask(await api.updateTask(id, { [field]: value.trim() ? value : null })); await refresh(); }, "Reviewed value saved. Confirmation is a separate step.")} confirm={field => run(async () => { setTask(await api.confirmTask(id, [field])); await refresh(); }, "Field confirmed. Readiness was recalculated by the existing rules.")} />)}
       </section>
       <section className="brief original-sources"><h2>Original words and sources</h2><p className="muted text-sm">The original contributions stay available. Structured interpretations do not replace them.</p>{interview?.sources.length ? interview.sources.map(source => <details key={source.id}><summary>{source.kind.replaceAll("_", " ")}{source.role ? ` · ${source.role}` : " · Contributor"}</summary><blockquote>{source.text}</blockquote></details>) : <blockquote>{task.context || "No source text recorded yet."}</blockquote>}</section>
-    </div><KnowledgeMap task={task} interview={interview} /></div>
+    </div></div>
   </>;
 }

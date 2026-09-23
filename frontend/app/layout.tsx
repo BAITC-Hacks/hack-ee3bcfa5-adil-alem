@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import "./visual-polish.css";
+import "./marketplace-polish.css";
 import { Navigation } from "@/components/navigation";
 export const metadata: Metadata = { title: "AI Sana | Challenge Hub", description: "Real business challenges. Student ingenuity. Explore challenges across Kazakhstan." };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

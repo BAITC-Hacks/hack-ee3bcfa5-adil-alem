@@ -1,0 +1,182 @@
+/* Calm intelligence: presentation only, shared by the existing workflows. */
+:root {
+  --ink: #183b36;
+  --muted: #5d716a;
+  --line: #d7dfd7;
+  --teal: #245e4b;
+  --paper: #f5f4ee;
+}
+body { font-family: "Segoe UI", Arial, Helvetica, sans-serif; }
+h1, h2, h3, h4 { text-wrap: pretty; }
+h1 { font-weight: 500; letter-spacing: -2px; }
+.container { max-width: 1344px; padding-inline: 48px; }
+.site-header { background: #fcfcf8; }
+.header-inner { max-width: 1440px; min-height: 88px; padding-inline: 48px; }
+.brand-mark { border-radius: 7px; }
+.brand strong { font-weight: 600; letter-spacing: -.8px; }
+.brand small { font-size: 9px; letter-spacing: 2.1px; }
+nav { gap: 32px; font-weight: 500; }
+.nav-active { border-bottom-width: 1px; }
+.role-switch { font-size: 10px; letter-spacing: .2px; }
+.role-switch select { background: transparent; border-color: #c5d0c6; }
+.eyebrow { font-size: 10px; letter-spacing: 1.8px; }
+.detail-header { padding-block: 26px 34px; }
+.detail-header h1 { font-size: clamp(34px, 3.15vw, 48px); font-weight: 500; line-height: 1.17; }
+.detail-header > .muted { line-height: 1.8; max-width: 76ch; }
+.back-link { margin-top: 28px; font-size: 12px; }
+.brief, .readiness-panel, .state { border-radius: 6px; box-shadow: none; }
+.button {
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 12px 20px;
+  transition: background-color 130ms, border-color 130ms, color 130ms;
+}
+.button:hover:not(:disabled) { background: #285648; }
+.button.secondary { border-color: #b5c5b9; background: #fffefa; }
+.button.secondary:hover:not(:disabled) { background: #ecf1e9; }
+.quiet-button { text-underline-offset: 4px; }
+a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visible,
+input:focus-visible, textarea:focus-visible { outline: 2px solid #287659; outline-offset: 4px; }
+.score strong { font-variant-numeric: tabular-nums; font-weight: 500; letter-spacing: -1.8px; }
+.readiness-panel .score strong { font-size: 72px; }
+.badge { border-radius: 3px; font-size: 11px; font-weight: 500; padding: 5px 9px; }
+.badge.draft { background: #f1ede3; color: #6c5b39; }
+.badge.working { background: #eaf0f1; color: #3e626c; }
+.badge.ready { background: #e7f0e7; color: #346247; }
+.badge.priority { background: #deebe0; color: #1d4c36; }
+.panel-description { font-size: 12px; line-height: 1.8; }
+.save-status { border-left: 2px solid #76947b; padding: 10px 15px; margin-bottom: 18px; background: #edf3e9; }
+.site-footer { max-width: 1344px; padding-inline: 48px; margin-top: 20px; }
+
+/* New challenge: writing surface and a quiet editorial explainer. */
+.interview-intro { max-width: 900px; padding-bottom: 30px; }
+.interview-intro h1 { max-width: 750px; font-size: clamp(34px, 3.4vw, 50px); }
+.new-challenge { padding: 32px; border-top: 2px solid #597766; }
+.new-challenge textarea { min-height: 250px; line-height: 1.9; }
+.interview-explainer { background: #eaf0e5; border: 0; padding: 30px; }
+.interview-explainer::before { content: "○  —  ◐  —  ●"; display: block; color: #3d6652; font-size: 27px; letter-spacing: 8px; margin: 2px 0 26px; }
+.interview-explainer h2 { font-family: Georgia, "Times New Roman", serif; font-size: 28px; font-weight: 400; line-height: 1.3; }
+.interview-explainer ol { padding-left: 20px; font-size: 13px; }
+.interview-explainer li { margin-block: 16px; padding-left: 4px; }
+.interview-explainer .score-note { border-color: #c8d5c5; font-size: 11px; }
+
+/* Questions and formed knowledge sit next to one another from the first screen. */
+.interview-header { border-bottom: 1px solid var(--line); margin-bottom: 30px; padding-bottom: 28px; }
+.interview-header h1 { margin-top: 14px; }
+.interview-layout { grid-template-columns: minmax(0, 1fr) 370px; gap: 38px; margin-bottom: 44px; }
+.interview-batch > .section-heading { margin-bottom: 18px; }
+.interview-batch > .section-heading h2 { font-size: 23px; font-weight: 500; }
+.interview-batch > div { counter-reset: interview-question; }
+.interview-question { counter-increment: interview-question; border: 0; border-top: 1px solid #cbd7cd; border-radius: 0; padding: 24px 26px 26px; margin-bottom: 18px; background: #fffefa; }
+.interview-question .question-meta::before { content: counter(interview-question, decimal-leading-zero); font-size: 12px; font-variant-numeric: tabular-nums; color: #647d6e; margin-right: 1px; }
+.question-meta .eyebrow { margin-right: auto; }
+.interview-question h3 { font-size: 20px; font-weight: 500; line-height: 1.5; margin: 17px 0 20px; max-width: 52ch; }
+.difficulty { background: #edf0e7; color: #526b5d; border-radius: 3px; font-size: 10px; }
+.question-inputs textarea, .question-inputs input, .review-field textarea { background: #fbfcf8; border-radius: 4px; border-color: #bdcdc0; padding: 13px 14px; }
+.question-actions { gap: 12px 19px; padding-top: 3px; }
+.question-actions .quiet-button { font-size: 12px; min-height: 32px; padding-block: 7px; }
+.knowledge-panel { background: #eef2e9; border-color: #d5dfd1; padding: 26px; }
+.knowledge-panel hr { border-color: #cfdacb; }
+.knowledge-panel h2 { font-size: 20px; font-weight: 500; margin-bottom: 17px; }
+.knowledge-panel .panel-description { margin-block: 14px 0; }
+.knowledge-panel .score { margin-top: 10px; }
+.knowledge-list > div { border-top-color: #d5dfd1; padding-block: 13px; }
+.knowledge-list > div > a { font-size: 12px; margin-bottom: 7px; }
+.knowledge-list > div > p { font-size: 11px; line-height: 1.65; margin-top: 7px; }
+.knowledge-status { padding: 3px 7px; border-radius: 3px; font-size: 11px; line-height: 1.5; border: 1px solid transparent; }
+.knowledge-status.open { background: #f8faf5; border-color: #d3dccf; color: #526451; }
+.knowledge-status.confirmed { background: #deecde; color: #28513a; }
+.knowledge-status.unknown { background: #f5eddd; color: #75602d; }
+.knowledge-status.needs_expert { background: #e4edf0; color: #335b69; }
+.knowledge-status.conflict { background: #f7e9e2; color: #943d2d; }
+.knowledge-status.not_applicable { background: #e6e9e2; color: #57634f; }
+.expert-reference { border-left: 2px solid #809aa2; padding-left: 10px; }
+.review-layout { margin-top: 40px; }
+.review-layout > .interview-main { display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 38px; align-items: start; }
+.review-layout .original-sources { margin-top: 0; }
+.review-layout .interview-review { margin-top: 0; }
+.interview-review > h2, .original-sources h2 { font-size: 28px; font-weight: 500; }
+.review-field { padding-block: 24px; }
+.review-hint { font-size: 11px; line-height: 1.8; }
+.source-excerpt blockquote, .original-sources blockquote { background: #f4f5ed; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.8; }
+[data-testid="publication"] { margin: 32px 0 0; padding: 28px 32px; border-top: 2px solid #718870; }
+[data-testid="publication"] .review-field { max-width: 720px; }
+[data-testid="publication"] .interview-actions { border-top: 1px solid var(--line); padding-top: 20px; }
+
+/* Execution: five numbered gates, with requirements as readable evidence. */
+.execution-panel { margin: 8px 0 32px; padding: 30px 32px; border-radius: 6px; border: 1px solid #bccfbd; border-top: 3px solid #295943; background: #fcfdf9; }
+.execution-header h2 { font-size: 32px; line-height: 1.2; letter-spacing: -1px; margin: 13px 0; }
+.execution-header > div { max-width: 730px; }
+.execution-header p { max-width: 69ch; }
+.execution-distinction { max-width: 96ch; font-size: 11px; }
+.execution-summary { border-top: 1px solid var(--line); padding-top: 23px; margin-top: 25px; }
+.execution-summary > strong { font-size: 25px; font-weight: 500; }
+.execution-summary > span { border-left: 1px solid var(--line); padding-left: 20px; font-size: 13px; }
+.execution-gates { gap: 0; border: 1px solid #d0dbcf; border-radius: 4px; overflow: hidden; }
+.execution-gate { border: 0; border-radius: 0; background: #fffefa; }
+.execution-gates > li + li { border-top: 1px solid #d0dbcf; }
+.execution-gate > summary { padding: 19px 22px; gap: 22px; }
+.execution-gate > summary:hover { background: #eff4eb; }
+.execution-gate-number { font-size: 17px; color: #54725d; letter-spacing: -.5px; width: 24px; flex-shrink: 0; }
+.execution-gate h3 { font-size: 12px; letter-spacing: 1.5px; }
+.execution-status { border-radius: 3px; font-size: 10px; padding: 5px 9px; letter-spacing: .4px; }
+.execution-status.pass { background: #e5efe1; color: #28583d; }
+.execution-status.blocked { background: #f4e8d7; color: #834b20; }
+.execution-status.not_applicable { background: #eaede6; color: #546450; }
+.execution-gate.blocked > summary { border-left: 3px solid #b7884e; padding-left: 19px; }
+.execution-gate-body { padding: 0 25px; background: #fff; }
+.execution-requirement { padding-block: 25px; }
+.execution-requirement h4 { font-size: 19px; font-weight: 500; }
+.execution-stop { border-left: 2px solid #ba8b55; padding: 10px 13px; background: #fbf5ea; margin-top: 15px; }
+.execution-requirement dt { font-size: 10px; text-transform: uppercase; letter-spacing: 1.1px; color: #536b60; }
+.execution-requirement dd { font-size: 14px; color: #294d40; line-height: 1.8; }
+.execution-sources { border-top: 1px solid var(--line); padding-top: 16px; }
+.execution-sources > summary { font-weight: 500; color: #2a5c48; }
+.execution-source { background: #f7f8f2; border-radius: 3px; }
+.execution-source > blockquote { font-family: Georgia, "Times New Roman", serif; font-size: 14px; }
+.execution-footnote { max-width: 95ch; }
+
+@media (max-width: 1100px) {
+  .container, .header-inner { padding-inline: 28px; }
+  .interview-layout { grid-template-columns: minmax(0, 1fr) 315px; gap: 24px; }
+  .review-layout > .interview-main { grid-template-columns: minmax(0, 1fr) 315px; gap: 24px; }
+  .knowledge-panel { padding: 22px; }
+  .question-actions { gap: 10px 14px; }
+}
+@media (max-width: 800px) {
+  .container, .header-inner, .site-footer { padding-inline: 22px; }
+  .interview-layout { grid-template-columns: 1fr; }
+  .review-layout > .interview-main { grid-template-columns: 1fr; }
+  .knowledge-panel { grid-row: auto; }
+  .knowledge-list > div > p.expert-reference { display: block; }
+  .interview-header { margin-bottom: 24px; }
+  .interview-question { padding: 22px; }
+  .execution-panel { padding: 24px; }
+  .execution-header h2 { font-size: 27px; }
+  .execution-summary time { margin-top: 3px; }
+  .review-layout { margin-top: 28px; }
+  .interview-explainer { padding: 26px; }
+}
+@media (max-width: 500px) {
+  .container, .header-inner, .site-footer { padding-inline: 18px; }
+  h1, .detail-header h1, .interview-intro h1 { font-size: 32px; letter-spacing: -1px; }
+  .new-challenge { padding: 23px; }
+  .new-challenge textarea { min-height: 220px; }
+  .interview-question { padding: 21px 18px; }
+  .interview-question h3 { font-size: 18px; }
+  .interview-question .question-meta::before { display: none; }
+  .execution-panel { padding: 22px 16px; }
+  .execution-gate > summary { padding: 16px 12px; gap: 12px; }
+  .execution-gate.blocked > summary { padding-left: 9px; }
+  .execution-gate-number { font-size: 14px; width: 19px; }
+  .execution-gate h3 { font-size: 10px; letter-spacing: 1px; }
+  .execution-gate-body { padding: 0 16px; }
+  .execution-requirement h4 { font-size: 17px; }
+  .execution-summary > strong { font-size: 21px; }
+  [data-testid="publication"] { padding: 25px 21px; }
+  .knowledge-list { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
