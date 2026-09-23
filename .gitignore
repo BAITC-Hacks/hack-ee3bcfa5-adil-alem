@@ -1,0 +1,25 @@
+# Local configuration; only safe examples belong in Git.
+.env
+.env.*
+!.env.example
+!.env.*.example
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+node_modules/
+.next/
+*.tsbuildinfo
+test-results/
+playwright-report/
+*.log
+.openai-verification/
+.stress-verification/
+.DS_Store
+Thumbs.db

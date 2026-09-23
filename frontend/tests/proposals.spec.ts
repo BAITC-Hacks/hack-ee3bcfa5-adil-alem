@@ -1,0 +1,98 @@
+import { test, expect } from "@playwright/test";
+
+test("student submits original text; business makes independent, reversible decisions", async ({ page, request }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /AI contract review/ }).click();
+  await expect(page).toHaveURL(/\/challenges\/\d+$/);
+  const taskId = page.url().split("/").pop()!;
+  await page.getByRole("link", { name: "Submit proposal", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Your original proposal" })).toBeVisible();
+  await expect(page.getByLabel("Team", { exact: true })).toHaveValue("");
+  await expect(page.getByLabel("Team", { exact: true }).locator("option")).toHaveCount(6);
+  await expect(page.getByText("Not confirmed yet", { exact: true }).first()).toBeVisible();
+  await page.getByRole("button", { name: "Submit proposal" }).click();
+  expect(await page.getByLabel("Team", { exact: true }).evaluate((element: HTMLSelectElement) => element.checkValidity())).toBe(false);
+  await page.getByLabel("Team", { exact: true }).selectOption({ label: "Alatau NLP Lab" });
+  const idea = "Original student approach — keep legal review human.\nSecond line: preserve this exact wording.";
+  await page.getByLabel("Solution idea", { exact: true }).fill(idea);
+  await page.getByLabel("Implementation plan", { exact: true }).fill("Collect samples.\nBuild a clause viewer.\nReview with the legal team.");
+  await page.getByLabel("Timeline", { exact: true }).fill("Three weeks; demo after week two.");
+  await page.getByLabel("Prototype URL", { exact: true }).fill("https://example.com/student-demo");
+  await page.screenshot({ path: "test-results/proposal-form.png", fullPage: true });
+  const submitted = page.waitForResponse(response => response.url().endsWith(`/api/tasks/${taskId}/proposals`) && response.request().method() === "POST");
+  await page.getByRole("button", { name: "Submit proposal", exact: true }).click();
+  const proposal = await (await submitted).json();
+  expect(proposal.solution_idea).toBe(idea);
+  await expect(page.getByRole("heading", { name: "Proposal submitted" })).toBeVisible();
+  await page.getByRole("link", { name: "Back to challenge" }).click();
+  await page.getByRole("link", { name: /Review proposals as business/ }).click();
+  const card = page.getByTestId(`proposal-${proposal.id}`);
+  await expect(card).toContainText("Alatau NLP Lab");
+  expect(await card.locator("dd").first().textContent()).toBe(idea);
+  const list = await (await request.get(`http://127.0.0.1:8000/api/tasks/${taskId}/proposals`)).json();
+  const other = page.getByTestId(`proposal-${list[0].id}`);
+  await card.getByRole("button", { name: "Accept", exact: true }).click();
+  await expect(card.getByRole("status")).toHaveText("Accepted");
+  await expect(other.getByRole("status")).toHaveText("Pending");
+  await other.getByRole("button", { name: "Accept", exact: true }).click();
+  await expect(other.getByRole("status")).toHaveText("Accepted");
+  await expect(card.getByRole("status")).toHaveText("Accepted");
+  await card.getByRole("button", { name: "Reject", exact: true }).click();
+  await expect(card.getByRole("status")).toHaveText("Rejected");
+  await expect(other.getByRole("status")).toHaveText("Accepted");
+  await page.reload();
+  await expect(card.getByRole("status")).toHaveText("Rejected");
+  expect(await card.locator("dd").first().textContent()).toBe(idea);
+  await page.screenshot({ path: "test-results/business-review.png", fullPage: true });
+  await page.getByLabel("Demo role").selectOption("student");
+  await expect(page).toHaveURL("http://localhost:3000/");
+  await page.getByLabel("Demo role").selectOption("business");
+  await expect(page.getByRole("heading", { name: "Challenges, with possibility." })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Review proposals", exact: true })).toHaveCount(8);
+});
+
+test("form validates blanks, retains text after API failure, and handles unpublished challenge", async ({ page, request }) => {
+  const tasks = await (await request.get("http://127.0.0.1:8000/api/catalog")).json();
+  await page.goto(`/challenges/${tasks[0].id}/propose`);
+  await page.getByLabel("Team", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("Solution idea", { exact: true }).fill("   ");
+  await page.getByLabel("Implementation plan", { exact: true }).fill("A staged implementation plan");
+  await page.getByLabel("Timeline", { exact: true }).fill("Two weeks");
+  await page.getByLabel("Prototype URL", { exact: true }).fill("https://example.com/demo");
+  await page.getByRole("button", { name: "Submit proposal" }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("nonblank");
+  await page.getByLabel("Solution idea", { exact: true }).fill("My unchanged original submission");
+  await page.route("**/api/tasks/*/proposals", route => route.fulfill({ status: 500, json: { detail: "Test failure" } }));
+  await page.getByRole("button", { name: "Submit proposal" }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("Submission could not be confirmed");
+  await expect(page.getByLabel("Solution idea", { exact: true })).toHaveValue("My unchanged original submission");
+  await page.unroute("**/api/tasks/*/proposals");
+  await page.route("**/api/tasks/*/proposals", route => route.fulfill({ status: 409, json: {} }));
+  await page.getByRole("button", { name: "Submit proposal" }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("no longer published");
+});
+
+test("teams failure is recoverable and empty team list prevents submission", async ({ page }) => {
+  await page.route("**/api/teams", route => route.abort());
+  await page.goto("/challenges/1/propose");
+  await expect(page.getByRole("heading", { name: "We couldn’t connect to the hub" })).toBeVisible();
+  await page.unroute("**/api/teams");
+  await page.route("**/api/teams", route => route.fulfill({ json: [] }));
+  await page.getByRole("button", { name: "Try again" }).click();
+  await expect(page.getByText(/No teams are available yet/)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Submit proposal" })).toBeDisabled();
+});
+
+test("business empty, loading and decision error states", async ({ page }) => {
+  await page.route("**/api/tasks/2/proposals", async route => { await new Promise(resolve => setTimeout(resolve, 500)); await route.continue(); });
+  await page.goto("/business/challenges/2/proposals");
+  await expect(page.getByRole("heading", { name: "Loading challenges" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "No proposals yet" })).toBeVisible();
+  await page.goto("/business/challenges/3/proposals");
+  const card = page.locator(".proposal-review").first();
+  await expect(card.getByRole("status")).toHaveText("Accepted");
+  await page.route("**/api/proposals/*/reject", route => route.abort());
+  await card.getByRole("button", { name: "Reject" }).click();
+  await expect(card.getByRole("alert")).toContainText("Decision could not be confirmed");
+  await expect(card.getByRole("status")).toHaveText("Accepted");
+});
