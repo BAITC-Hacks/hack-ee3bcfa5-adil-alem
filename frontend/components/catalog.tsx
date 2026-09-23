@@ -14,6 +14,12 @@ export function Catalog() {
   const [status, setStatus] = useState("loading");
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    const refresh = () => { if (document.visibilityState === "visible") setAttempt(value => value + 1); };
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => { window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+  }, []);
+  useEffect(() => {
     const controller = new AbortController();
     setStatus("loading");
     const params = new URLSearchParams({ sort });

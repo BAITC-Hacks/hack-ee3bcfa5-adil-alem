@@ -47,8 +47,10 @@ shows the challenge title, readiness, expected result, and constraints. Missing 
 unconfirmed information is labeled; low readiness never blocks submission.
 Team, solution idea, plan, timeline, and an HTTP(S) prototype URL are required.
 Submissions use `POST /api/tasks/{id}/proposals`. While submitting, controls are
-disabled. Errors retain the entered text. Success shows a pending confirmation and
-links back to the challenge/catalog. An uncertain network result is not retried
+disabled. Errors retain the entered text. Drafts and successful submission receipts
+survive refresh in the same browser tab using session storage. A receipt records
+submission, not the current business decision, and remains available after
+unpublication. An explicit second proposal is allowed. An uncertain network result is not retried
 automatically because the backend does not provide idempotency keys.
 
 The business dashboard uses `GET /api/tasks`; review uses `GET /api/tasks/{id}`,
@@ -98,6 +100,11 @@ endpoint; only that human action can award deterministic readiness points.
 Unresolved items cannot be confirmed until known information is explicitly supplied.
 Editing a previously confirmed field removes its confirmation under the existing
 backend rules. There is no extra progress percentage or target score.
+
+Unsaved human-review text is recoverable in the same tab when browser storage is
+available and its server base has not changed. It is never applied over a newer
+server value. Save important work before closing the tab. Catalog and public
+detail pages revalidate on returning focus; they do not poll continuously.
 
 **Finish for now** preserves the interview and leaves remaining uncertainty
 visible. It is available even after an AI error and below 100 readiness. Completion

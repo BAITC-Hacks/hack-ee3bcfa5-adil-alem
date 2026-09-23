@@ -187,6 +187,12 @@ def _generate(db: Session, task: Task, row: InterviewSession) -> InterviewState:
     if not pending:
         return view
     payload = _payload(task, row, view, pending)
+    original_state = deepcopy(row.state)
+    task_id = task.id
+    failure = None
+    # Release the read transaction while the provider is running. A later human
+    # edit/finish must win over this request's older knowledge snapshot.
+    db.rollback()
     # No invented fallback questions: only model output may become a question.
     try:
         output = ai_interviewer.generate_interview(payload)
@@ -194,17 +200,24 @@ def _generate(db: Session, task: Task, row: InterviewSession) -> InterviewState:
                   else InterviewAIResult.model_validate(output))
         _validate_result(result, payload, view)
     except ai_interviewer.InterviewAIError as exc:
-        view.error = str(exc)
-        _write(row, view)
-        db.commit()
-        return view
+        failure = str(exc)
     except (ValidationError, ValueError, TypeError):
-        view.error = SAFE_ERROR
-        _write(row, view)
-        db.commit()
-        return view
+        failure = SAFE_ERROR
     except Exception:
-        view.error = "AI is temporarily unavailable. Your information is saved. Please retry."
+        failure = "AI is temporarily unavailable. Your information is saved. Please retry."
+
+    db.rollback()
+    db.expire_all()
+    row = db.get(InterviewSession, task_id)
+    if row.state != original_state:
+        current = _read(row)
+        if row.state.get("pending"):
+            current.error = "Challenge information changed during analysis. Your latest information is saved. Retry AI to use it."
+            _write(row, current)
+            db.commit()
+        return current
+    if failure:
+        view.error = failure
         _write(row, view)
         db.commit()
         return view

@@ -203,9 +203,11 @@ to run the product or automated tests from a clean clone.
 
 ## Automated verification
 
-Reverified in Step 9.1 (2026-09-23): **89/89 backend tests, 206/206 HTTP smoke checks, 21/21 browser
+Reverified in Step 10 (2026-09-23): **96/96 backend tests, 206/206 HTTP smoke checks, 27/27 browser
 tests; production build and TypeScript passed.** No coverage percentage is claimed.
 Automated tests use mocked AI and temporary databases; no paid API calls are needed.
+The [adversarial integration audit](INTEGRATION_AUDIT.md) records reproduced bugs,
+fixes, refresh/race tests, and the limits of the local-demo verdict.
 
 From `backend/` with its virtual environment active:
 
@@ -237,6 +239,7 @@ not regression commands; they are unnecessary for a judge's test run.
 README.md                 Product overview and setup
 SUBMISSION_AUDIT.md       Verification results and exact commit manifest
 DEMO.md                   Short operator runbook and recovery
+INTEGRATION_AUDIT.md       Adversarial scenarios, fixes, and demo-safety verdict
 backend/                  FastAPI, models, scoring, AI adapters, tests, seed data
   app/                    Routes, schemas, services
   .env.example            Safe backend configuration template

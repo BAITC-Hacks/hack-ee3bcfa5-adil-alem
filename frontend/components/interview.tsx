@@ -160,7 +160,17 @@ function ReviewField({ field, task, item, sources, busy, save, confirm }: {
 }) {
   const initial = item?.value ?? task[field] ?? "";
   const [value, setValue] = useState(initial);
-  useEffect(() => setValue(initial), [initial]);
+  const reviewKey = `sana-review-${task.id}-${field}`;
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(reviewKey) || "null");
+      setValue(saved?.base === initial && typeof saved.value === "string" ? saved.value : initial);
+    } catch { setValue(initial); }
+  }, [initial, reviewKey]);
+  function edit(value: string) {
+    setValue(value);
+    try { sessionStorage.setItem(reviewKey, JSON.stringify({ base: initial, value })); } catch { /* Optional tab-local recovery. */ }
+  }
   const saved = value === (task[field] ?? "");
   const isConfirmed = task.confirmed_fields.includes(field) && saved && !unresolved.has(item?.status || "OPEN");
   const canConfirm = saved && !!value.trim() && !unresolved.has(item?.status || "OPEN") && !isConfirmed;
@@ -169,7 +179,7 @@ function ReviewField({ field, task, item, sources, busy, save, confirm }: {
   return <section className="review-field" data-testid={`review-${field}`}>
     <div className="field-heading"><h3>{fieldLabels[field]}</h3><span className={`knowledge-status ${(item?.status || "OPEN").toLowerCase()}`}>{isConfirmed ? "Confirmed" : knowledgeLabel(item)}</span></div>
     <label className="sr-only" htmlFor={`review-${field}`}>Review {fieldLabels[field]}</label>
-    <textarea id={`review-${field}`} rows={field === "context" ? 4 : 3} value={value} disabled={busy} onChange={event => setValue(event.target.value)} placeholder="Not provided" />
+    <textarea id={`review-${field}`} rows={field === "context" ? 4 : 3} value={value} disabled={busy} onChange={event => edit(event.target.value)} placeholder="Not provided" />
     {source && <details className="source-excerpt"><summary>Original source{source.role ? ` · ${source.role}` : ""}</summary><blockquote>{source.text}</blockquote></details>}
     {conflictingSource && <details className="source-excerpt"><summary>Potentially conflicting original source{conflictingSource.role ? ` · ${conflictingSource.role}` : ""}</summary><blockquote>{conflictingSource.text}</blockquote></details>}
     {item?.expert && <p className="expert-reference">Knowledge contact: {item.expert}</p>}

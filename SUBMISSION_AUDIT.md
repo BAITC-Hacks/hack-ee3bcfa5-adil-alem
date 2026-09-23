@@ -1,4 +1,4 @@
-# Steps 9–9.1 — submission audit
+# Steps 9–10 — submission audit
 
 Date: 2026-09-23. **SAFE TO PUSH the audited, non-ignored files below.**
 No commit or push was performed. This is a local secret/ignore audit, not a
@@ -45,17 +45,26 @@ verify unchanged readiness, confirmations and saved stress results, and no AI
 POSTs caused by publication. Initial new-test failures were ambiguous selectors;
 these were corrected, and all tests passed on the final full run.
 
-## Verification after Step 9.1
+## Step 10 integration audit
+
+Checkpoint 5a20bd0 is now committed locally (84 tracked files). Step 10 reproduced
+and fixed five defects; see [INTEGRATION_AUDIT.md](INTEGRATION_AUDIT.md) for severity,
+evidence, limits and the final golden-flow rerun. Changes protect manual knowledge
+from late AI responses, recover tab-local proposal/review drafts, refresh public
+visibility on focus, and wrap long user content. No new AI feature or score was added.
+
+## Verification after Step 10
 
 | Check | Result |
 | --- | --- |
-| Backend unittest/API suite | 89/89 passed |
+| Backend unittest/API suite | 96/96 passed |
 | Live Uvicorn HTTP smoke checks | 206/206 passed |
-| Playwright browser suite | 21/21 passed |
+| Playwright browser suite | 27/27 passed |
 | Next.js production build | Passed |
 | TypeScript | Passed |
 
-Total: **110 test cases and 206 HTTP checks**. No real OpenAI calls.
+Total: **123 distinct test cases and 206 HTTP checks**. The golden UI case passed
+once more after the full suite. No real OpenAI calls.
 Browser and smoke tests used isolated databases and cleaned up their servers.
 Package-lock dependency declarations match package.json. Local links in README
 and DEMO were checked. Windows commands were used in this verification; the
@@ -65,8 +74,8 @@ documented macOS/Linux equivalents were reviewed, not executed on those systems.
 
 - Git-visible contents checked for the configured key and common OpenAI, GitHub,
   AWS access-key, and private-key patterns; no matches.
-- Step 9.1 audit rechecked all 84 Git-visible files, including the two new files.
-- Available local history/reflog objects checked: 1 commit and 83 blob objects;
+- Step 10 audit rechecked the Git-visible file set and local history; no matches.
+- Available local history/reflog objects checked: 2 commits and 85 blob objects;
   no matches. This does not establish the state of remote-only history.
 - 14 ignore probes passed, including env variants, databases, virtualenv,
   node_modules, .next, and both real-model verification folders.
@@ -74,17 +83,19 @@ documented macOS/Linux equivalents were reviewed, not executed on those systems.
   the public API origin. Both templates are intentionally included.
 - Local env and real verification data are not tracked.
 
-At audit time, README.md was the only tracked file and was modified. Backend,
-frontend, and the new root files were untracked. Nothing was staged by this step.
+At Step 9 time, README.md was the only tracked file. The user subsequently committed
+and pushed checkpoint 5a20bd0. Step 10 leaves local modifications and three new
+files: INTEGRATION_AUDIT.md, backend/test_integration_audit.py, and
+frontend/tests/zzzz-audit.spec.ts. Nothing was staged, committed or pushed by this step.
 Review the staged diff before committing; rerun a secret check if files change.
 
 ## Exact files recommended for commit
 
-This manifest includes all 84 currently intended files, including this report.
+This manifest includes all 87 currently intended files, including this report.
 Use normal Git staging, never force-add ignored files:
 
 ```bash
-git add -- README.md DEMO.md SUBMISSION_AUDIT.md .gitignore backend frontend
+git add -- README.md DEMO.md SUBMISSION_AUDIT.md INTEGRATION_AUDIT.md .gitignore backend frontend
 git diff --cached --stat
 git diff --cached --check
 ```
@@ -92,6 +103,7 @@ git diff --cached --check
 ```text
 .gitignore
 DEMO.md
+INTEGRATION_AUDIT.md
 README.md
 SUBMISSION_AUDIT.md
 backend/.env.example
@@ -123,6 +135,7 @@ backend/demo_data.py
 backend/requirements.txt
 backend/seed.py
 backend/smoke_test.py
+backend/test_integration_audit.py
 backend/test_interview.py
 backend/test_openai_boundary.py
 backend/test_scoring.py
@@ -173,6 +186,7 @@ frontend/tests/stress_fixture.py
 frontend/tests/z-interview.spec.ts
 frontend/tests/zz-execution.spec.ts
 frontend/tests/zzz-publication.spec.ts
+frontend/tests/zzzz-audit.spec.ts
 frontend/tsconfig.json
 ```
 
